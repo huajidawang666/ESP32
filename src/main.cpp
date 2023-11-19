@@ -1,9 +1,14 @@
 /*
 |--lib
 |  |
-|  |--utt
-|  |  |- utt.c
-|  |  |- utt.h
+|  |--missions
+|  |  |- utt.cpp
+|  |  |- info.cpp
+|  |  |- settings.cpp
+|  |  |- missions.h
+|  |  |--settings
+|  |     |- brightness.cpp
+|  |     |- settings.h
 |  |
 |  |- README
 |
@@ -15,6 +20,7 @@
 #include <Arduino.h>
 #include <U8g2lib.h>
 #include "missions.h"
+#include "settings/settings.h"
 #define LIST_AMOUNT 10
 #define LEFT 12
 #define RIGHT 14
@@ -22,7 +28,10 @@
 #define DOWN 26
 #define ENTER 25
 
-String list[LIST_AMOUNT + 1] = {"", "Ultimate TicTacToe", "Info", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10"};
+//system
+unsigned short int brightness = 10;
+
+String list[LIST_AMOUNT + 1] = {"", "Ultimate TicTacToe", "Info", "Settings", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10"};
 int pageStart = 1;
 int cursor = 1;
 int showcaseIndex = 1;
@@ -40,6 +49,7 @@ int buttonStatus[6] = {0};
 
 void setup() {
   u8g2.begin();
+  u8g2.setContrast(brightness * 255 / 20);
   u8g2.enableUTF8Print();
   u8g2.setFont(u8g2_font_7x14_tr);
   u8g2.setFontDirection(0);
@@ -117,9 +127,17 @@ void startMission(int index) {
         }
     }
     if (index == 2) {
+        info_init();
         finishMission = false;
         while (!finishMission) {
             info_loop();
+        }
+    }
+    if (index == 3) {
+        settings_init();
+        finishMission = false;
+        while (!finishMission) {
+            settings_loop();
         }
     }
 }

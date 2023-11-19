@@ -8,6 +8,7 @@
 #define ENTER 25
 
 extern U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
+extern unsigned short int brightness;
 
 int gameBoard[10][10] = {0};
 int subBoard[4][4] = {0};
@@ -71,6 +72,7 @@ void utt_loop() {
   // Serial.println(currentSubBoardIndexy);
 
   u8g2.clearBuffer();
+  u8g2.setContrast(brightness * 255 / 20);
   printBoardStructure();
   printBoard();
   if (currentSelectx != 10) { printSelect();}

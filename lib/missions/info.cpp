@@ -11,7 +11,10 @@
 extern U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
 extern int buttonStatus[6];
 extern bool finishMission;
+extern unsigned short int brightness;
 int info_pageStart = 1;
+int displayline;
+
 String info[INFOLINE + 1] = {
                    "|-No more byd this.-|",
                    " My first ESP32 Proj ",
@@ -23,26 +26,36 @@ String info[INFOLINE + 1] = {
                    "games.               ",
                    "  Project is under   ",
                    "MIT license. Github  ",
-                   "repository: ",
-                   "11",
-                   "12",
-                   "13",
-                   "14",
-                   "15",
-                   "16",
-                   "17",
-                   "18",
-                   "19",
-                   "20"
+                   "repository: https://g",
+                   "ithub.com/huajidawang",
+                   "666/ESP32",
+                   "",
+                   "",
+                   "",
+                   "",
+                   "",
+                   "",
+                   "",
+                   ""
                    };
 
+void info_init() {
+    info_pageStart = 1; 
+    displayline = INFOLINE;
+    while (info[displayline + 1] == "") {
+        displayline --;
+    }
+}
+
 void info_loop() {
+
     if (readButton(UP, 3) && info_pageStart > 1) {
         info_pageStart --;
-    } else if (readButton(DOWN, 4) && info_pageStart < INFOLINE - 4) {
+    } else if (readButton(DOWN, 4) && info_pageStart < displayline - 3) {
         info_pageStart ++;
     }
     u8g2.setFont(u8g2_font_t0_11_tr);
+    u8g2.setContrast(brightness * 255 / 20);
     u8g2.setFontDirection(0);
     u8g2.clearBuffer();
     
@@ -52,7 +65,7 @@ void info_loop() {
     }
 
     u8g2.drawHLine(0, 51, 128);
-    u8g2.setCursor(0, 60);
+    u8g2.setCursor(0, 63);
     u8g2.print("[<- Back]");
     u8g2.sendBuffer();
     if (readButton(ENTER, 5)) {
