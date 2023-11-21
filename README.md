@@ -7,6 +7,7 @@ This is my first ESP32 project developed with PlatformIO, including wide range o
 
 ### Functions
 · Settings
+
 |- · Brightness
 
 ## Features already developing
@@ -14,6 +15,7 @@ This is my first ESP32 project developed with PlatformIO, including wide range o
 
 ### Functions
 · Settings
+
 |- · Time & Date
 
 ## Features planned
@@ -22,6 +24,9 @@ This is my first ESP32 project developed with PlatformIO, including wide range o
 
 ### Functions
 · Settings
+
 |- · WIFI
+
 · UI interface
+
 |- · Home page
