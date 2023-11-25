@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <U8g2lib.h>
-#include "missions.h"
+#include "system.h"
 #include "settings/settings.h"
 #define LEFT 12
 #define RIGHT 14
@@ -8,11 +8,6 @@
 #define DOWN 26
 #define ENTER 25
 #define SETTINGS_AMOUNT 10
-
-extern U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
-extern int ButtonStatus[6];
-extern bool finishMission;
-extern unsigned short int brightness;
 
 bool finishSettingMission = true;
 
@@ -42,13 +37,14 @@ void settings_init() {
     int settings_cursor = 1;
     int settings_pageStart = 1;
     settings_displayline = SETTINGS_AMOUNT + 1;
-    while (settings_list[settings_displayline] == "") {
+    while (settings_list[settings_displayline - 1] == "") {
         settings_displayline --;
     }
+    settings_displayline --;
+    u8g2.setContrast(brightness * 255 / 20);
 }
 
 void settings_loop() {
-  u8g2.setContrast(brightness * 255 / 20);
   u8g2.setFont(u8g2_font_t0_11_tr);
   u8g2.setFontDirection(0);
   u8g2.clearBuffer();
@@ -91,6 +87,13 @@ void settings_readInput() {
         finishMission = true;
     }
     if (readButton(ENTER, 5)) {
+        if (settings_cursor == 1) {
+            finishSettingMission = false;
+            timeanddate_init();
+            while (!finishSettingMission) {
+                timeanddate_loop();
+            }
+        }
         if (settings_cursor == 2) {
             finishSettingMission = false;
             brightness_init();

@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <U8g2lib.h>
-#include "missions.h"
+#include "system.h"
 #define LEFT 12
 #define RIGHT 14
 #define UP 27
@@ -8,10 +8,6 @@
 #define ENTER 25
 #define INFOLINE 20
 
-extern U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
-extern int buttonStatus[6];
-extern bool finishMission;
-extern unsigned short int brightness;
 int info_pageStart = 1;
 int displayline;
 

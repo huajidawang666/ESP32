@@ -5,10 +5,11 @@
 |  |  |- utt.cpp
 |  |  |- info.cpp
 |  |  |- settings.cpp
-|  |  |- missions.h
+|  |  |- system.h
 |  |  |--settings
 |  |     |- brightness.cpp
 |  |     |- settings.h
+|  |     |- timeanddate.cpp
 |  |
 |  |- README
 |
@@ -19,7 +20,7 @@
 
 #include <Arduino.h>
 #include <U8g2lib.h>
-#include "missions.h"
+#include "system.h"
 #include "settings/settings.h"
 #define LIST_AMOUNT 10
 #define LEFT 12
@@ -27,6 +28,7 @@
 #define UP 27
 #define DOWN 26
 #define ENTER 25
+#define SPARETIME 30000 // milliseconds
 
 //system
 unsigned short int brightness = 10;
@@ -37,15 +39,27 @@ int cursor = 1;
 int showcaseIndex = 1;
 int startDisplayTime = 0;
 int currentTime = 0;
+long realTime = 0;
+int spareTime = 0; // no action in 30s turn to home page, showing time
+bool mode = 1; // 0 stands for displayhome, 1 stands for displaylist
 
 void home_readInput();
 void startMission(int index);
+void transition(bool direction);
+void slide(bool direction);
+void displayHome();
+void displayList();
 
 bool finishMission = true;
 
 U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R0, /* clock=*/5, /* data=*/18, 
                                              /* cs=*/21, /* dc=*/19, /* reset=*/15);
 int buttonStatus[6] = {0};
+
+
+
+
+
 
 void setup() {
 //   Serial.begin(9600);
@@ -60,6 +74,8 @@ void setup() {
   pinMode(26, INPUT_PULLDOWN);
   pinMode(25, INPUT_PULLDOWN);
   startDisplayTime = millis();
+  spareTime = startDisplayTime;
+  
 }
 
 void loop() {
@@ -68,6 +84,42 @@ void loop() {
   currentTime = millis();
   u8g2.clearBuffer();
   home_readInput();
+  if (mode) {
+    displayList();
+    if (millis() > spareTime + SPARETIME) {
+        mode = !mode;
+    }
+  } else {
+    displayHome();
+  }
+}
+
+void displayHome() {
+    int runday = millis() / 1000 / 60 / 60 / 24;
+    int runhr = (millis() / 1000 / 60 / 60) % 24;
+    int runmin = (millis() / 1000 / 60) % 60;
+
+    int hr = ((realTime + millis()) / 1000 / 60 / 60) % 24;
+    int min = ((realTime + millis()) / 1000 / 60) % 60;
+    String timenow = String(hr < 10 ? "0" + String(hr) : String(hr)) + ":" + String(min < 10 ? "0" + String(min) : String(min))
+                    //  + ":" + String(((realTime + millis()) / 1000) % 60)
+                     ;
+    String runtimenow = "Runtime: " + String(runday) + "d "
+                         + String(runhr < 10 ? "0" + String(runhr) : String(runhr)) + "h "
+                         + String(runmin < 10 ? "0" + String(runmin) : String(runmin)) + "m "
+                         ;
+                         
+    u8g2.setFont(u8g2_font_t0_11_tr);
+    u8g2.setCursor(2, 12);
+    u8g2.print(runtimenow);
+    u8g2.setFont(u8g2_font_logisoso32_tn);
+    u8g2.setCursor(19, 48);
+    // u8g2.setCursor(0, 48);
+    u8g2.print(timenow);
+    u8g2.sendBuffer();
+}
+
+void displayList() {
   for (int i = 1; i <= 4; i ++) {
     if (cursor == i + pageStart - 1) {
         u8g2.drawLine(3, i * 16 - 11, 6, i * 16 - 8);
@@ -94,28 +146,41 @@ void loop() {
 }
 
 void home_readInput() {
-    if (readButton(UP, 3)) {
-        if (cursor == pageStart && pageStart > 1) {
-            pageStart--;
-            cursor--;
-            showcaseIndex = 0;
-        } else if (cursor > pageStart) {
-            cursor--;
-            showcaseIndex = 0;
+    if (mode) {
+        if (readButton(UP, 3)) {
+            spareTime = millis();
+            if (cursor == pageStart && pageStart > 1) {
+                slide(1);
+                pageStart--;
+                cursor--;
+                showcaseIndex = 0;
+            } else if (cursor > pageStart) {
+                transition(1);
+                cursor--;
+                showcaseIndex = 0;
+            }
         }
-    }
-    if (readButton(DOWN, 4)) {
-        if (cursor == pageStart + 3 && pageStart + 3 < LIST_AMOUNT) {
-            pageStart++;
-            cursor++;
-            showcaseIndex = 0;
-        } else if (cursor < pageStart + 3) {
-            cursor++;
-            showcaseIndex = 0;
+        if (readButton(DOWN, 4)) {
+            spareTime = millis();
+            if (cursor == pageStart + 3 && pageStart + 3 < LIST_AMOUNT) {
+                slide(0);
+                pageStart++;
+                cursor++;
+                showcaseIndex = 0;
+            } else if (cursor < pageStart + 3) {
+                transition(0);
+                cursor++;
+                showcaseIndex = 0;
+            }
         }
-    }
-    if (readButton(ENTER, 5)) {
-        startMission(cursor);
+        if (readButton(ENTER, 5)) {
+            startMission(cursor);
+        }
+    } else {
+        if (readButton(LEFT, 1) || readButton(RIGHT, 2) || readButton(UP, 3) || readButton(DOWN, 4) || readButton(ENTER, 5)) {
+            mode = !mode;
+            spareTime = millis();
+        }
     }
 }
 
@@ -140,5 +205,99 @@ void startMission(int index) {
         while (!finishMission) {
             settings_loop();
         }
+    }
+}
+
+/*
+DONT MIND THE FUCK INDEX THEY FUCKED MY BRAIN UP
+DONT MIND THE FUCK INDEX THEY FUCKED MY BRAIN UP
+DONT MIND THE FUCK INDEX THEY FUCKED MY BRAIN UP
+DONT MIND THE FUCK INDEX THEY FUCKED MY BRAIN UP
+DONT MIND THE FUCK INDEX THEY FUCKED MY BRAIN UP
+*/
+
+void transition(bool direction) {//1 stands for up, 0 stands for down
+    int frame = 0; // max = 8
+    while (frame <= 8) {
+        u8g2.clearBuffer();
+        u8g2.setFont(u8g2_font_7x14_tr);
+        u8g2.setFontDirection(0);
+        if (direction == 0) {
+            for (int i = 1; i <= 4; i ++) {
+                if (cursor == i + pageStart - 1) {
+                    u8g2.drawLine(3, i * 16 - 11 + 2 * frame, 6, i * 16 - 8 + 2 * frame);
+                    u8g2.drawLine(3, i * 16 - 4 + 2 * frame, 6, i * 16 - 7 + 2 * frame);
+                    u8g2.setCursor(9 - 6 * frame / 8, 16 * i - 2);
+                    u8g2.print(list[i + pageStart - 1]);
+                } else if (cursor == i + pageStart - 2) {
+                    u8g2.setCursor(3 + 6 * frame / 8, 16 * i - 2);
+                    u8g2.print(list[i + pageStart - 1]);    
+                } else {
+                    u8g2.setCursor(3, 16 * i - 2);
+                    u8g2.print(list[i + pageStart - 1]);
+                }
+            }
+            u8g2.sendBuffer();
+        } else {
+            for (int i = 1; i <= 4; i ++) {
+                if (cursor == i + pageStart - 1) {
+                    u8g2.drawLine(3, i * 16 - 11 - 2 * frame, 6, i * 16 - 8 - 2 * frame);
+                    u8g2.drawLine(3, i * 16 - 4 - 2 * frame, 6, i * 16 - 7 - 2 * frame);
+                    u8g2.setCursor(9 - 6 * frame / 8, 16 * i - 2);
+                    u8g2.print(list[i + pageStart - 1]);
+                } else if (cursor == i + pageStart) {
+                    u8g2.setCursor(3 + 6 * frame / 8, 16 * i - 2);
+                    u8g2.print(list[i + pageStart - 1]);    
+                } else {
+                    u8g2.setCursor(3, 16 * i - 2);
+                    u8g2.print(list[i + pageStart - 1]);
+                }
+            }
+            u8g2.sendBuffer();
+        }
+        frame++;
+    }
+}
+
+void slide(bool direction) {
+    int frame = 0; // max = 8
+    while (frame <= 8) {
+        u8g2.clearBuffer();
+        u8g2.setFont(u8g2_font_7x14_tr);
+        u8g2.setFontDirection(0);
+        if (direction == 0) {
+            for (int i = 1; i <= 5; i ++) {
+                if (i == 4) {
+                    u8g2.setCursor(9 - 6 * frame / 8, 16 * i - 2 - 2 * frame);
+                    u8g2.print(list[i + pageStart - 1]);
+                } else if (i == 5) {
+                    u8g2.setCursor(3 + 6 * frame / 8, 16 * i - 2 - 2 * frame);
+                    u8g2.print(list[i + pageStart - 1]);
+                } else {
+                    u8g2.setCursor(3, 16 * i - 2 - 2 * frame);
+                    u8g2.print(list[i + pageStart - 1]);
+                }
+            }
+            u8g2.drawLine(3, 53, 6, 56);
+            u8g2.drawLine(3, 60, 6, 57);
+            u8g2.sendBuffer();
+        } else {
+            for (int i = 0; i <= 4; i ++) {
+                if (i == 0) {
+                    u8g2.setCursor(3 + 6 * frame / 8, 16 * i - 2 + 2 * frame);
+                    u8g2.print(list[i + pageStart - 1]);
+                } else if (i == 1) {
+                    u8g2.setCursor(9 - 6 * frame / 8, 16 * i - 2 + 2 * frame);
+                    u8g2.print(list[i + pageStart - 1]);
+                } else {
+                    u8g2.setCursor(3, 16 * i - 2 + 2 * frame);
+                    u8g2.print(list[i + pageStart - 1]);
+                }
+            }
+            u8g2.drawLine(3, 5, 6, 8);
+            u8g2.drawLine(3, 12, 6, 9);
+            u8g2.sendBuffer();
+        }
+        frame ++;
     }
 }

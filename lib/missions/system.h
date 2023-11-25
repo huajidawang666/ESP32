@@ -8,7 +8,11 @@ void utt_init(); void utt_loop();
 void info_init(); void info_loop();
 //Settings
 void settings_init(); void settings_loop();
+
+
 bool readButton(int pin, int direction);
+
+extern long realTime;
 extern bool finishMission;
 extern unsigned short int brightness;
 extern int buttonStatus[6];
