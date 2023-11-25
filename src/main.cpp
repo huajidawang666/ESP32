@@ -43,11 +43,12 @@ void startMission(int index);
 
 bool finishMission = true;
 
-U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R0, /* clock=*/18, /* data=*/13, 
-                                             /* cs=*/4, /* dc=*/2, /* reset=*/15);
+U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R0, /* clock=*/5, /* data=*/18, 
+                                             /* cs=*/21, /* dc=*/19, /* reset=*/15);
 int buttonStatus[6] = {0};
 
 void setup() {
+//   Serial.begin(9600);
   u8g2.begin();
   u8g2.setContrast(brightness * 255 / 20);
   u8g2.enableUTF8Print();

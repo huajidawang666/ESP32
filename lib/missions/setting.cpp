@@ -41,8 +41,8 @@ void settings_readInput();
 void settings_init() {
     int settings_cursor = 1;
     int settings_pageStart = 1;
-    settings_displayline = SETTINGS_AMOUNT;
-    while (settings_list[settings_displayline + 1] == "") {
+    settings_displayline = SETTINGS_AMOUNT + 1;
+    while (settings_list[settings_displayline] == "") {
         settings_displayline --;
     }
 }
@@ -80,7 +80,7 @@ void settings_readInput() {
         }
     }
     if (readButton(DOWN, 4)) {
-        if (settings_cursor == settings_pageStart + 4 && settings_pageStart + 3 < settings_displayline) {
+        if (settings_cursor == settings_pageStart + 4 && settings_pageStart + 4 < settings_displayline) {
             settings_pageStart++;
             settings_cursor++;
         } else if (settings_cursor < settings_pageStart + 4) {

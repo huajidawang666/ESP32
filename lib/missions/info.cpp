@@ -40,9 +40,13 @@ String info[INFOLINE + 1] = {
                    };
 
 void info_init() {
+    u8g2.clearBuffer();
+    u8g2.setFont(u8g2_font_t0_11_tr);
+    u8g2.setContrast(brightness * 255 / 20);
+    u8g2.setFontDirection(0);
     info_pageStart = 1; 
-    displayline = INFOLINE;
-    while (info[displayline + 1] == "") {
+    displayline = INFOLINE + 1;
+    while (info[displayline - 1] == "") {
         displayline --;
     }
 }
@@ -51,12 +55,9 @@ void info_loop() {
 
     if (readButton(UP, 3) && info_pageStart > 1) {
         info_pageStart --;
-    } else if (readButton(DOWN, 4) && info_pageStart < displayline - 3) {
+    } else if (readButton(DOWN, 4) && info_pageStart < displayline - 5) {
         info_pageStart ++;
     }
-    u8g2.setFont(u8g2_font_t0_11_tr);
-    u8g2.setContrast(brightness * 255 / 20);
-    u8g2.setFontDirection(0);
     u8g2.clearBuffer();
     
     for (int i = 1; i <= 5; i++) {
