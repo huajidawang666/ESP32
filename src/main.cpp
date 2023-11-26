@@ -147,6 +147,9 @@ void displayList() {
 
 void home_readInput() {
     if (mode) {
+        if (readButton(LEFT, 1)) {
+            mode = !mode;
+        }
         if (readButton(UP, 3)) {
             spareTime = millis();
             if (cursor == pageStart && pageStart > 1) {
@@ -191,21 +194,20 @@ void startMission(int index) {
         while (!finishMission) {
             utt_loop();
         }
-    }
-    if (index == 2) {
+    } else if (index == 2) {
         info_init();
         finishMission = false;
         while (!finishMission) {
             info_loop();
         }
-    }
-    if (index == 3) {
+    } else if (index == 3) {
         settings_init();
         finishMission = false;
         while (!finishMission) {
             settings_loop();
         }
     }
+    spareTime = millis();
 }
 
 /*

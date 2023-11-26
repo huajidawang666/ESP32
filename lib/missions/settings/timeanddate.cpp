@@ -42,7 +42,7 @@ void timeanddate_readInput() {
     if (readButton(ENTER, 5)) {
         finishSettingMission = true;
         realTime = temperaryTime - millis();
-        realTime += (temperaryHr - (realTime / 1000 / 60 / 60) % 24) * 1000 * 60 * 60 + (temperaryMin - (realTime / 1000 / 60) % 60) * 1000 * 60;
+        realTime += (temperaryHr - (temperaryTime / 1000 / 60 / 60) % 24) * 1000 * 60 * 60 + (temperaryMin - (temperaryTime / 1000 / 60) % 60) * 1000 * 60;
     } else if (readButton(LEFT, 1) || readButton(RIGHT, 2)) {
         timeIndex = !timeIndex;
     } else if (readButton(UP, 3)) {
@@ -55,10 +55,8 @@ void timeanddate_readInput() {
     } else if (readButton(DOWN, 4)) {
         if (timeIndex == 0) {
             temperaryHr = (temperaryHr + 23) % 24;
-            realTime -= 1000 * 60 * 60;
         } else {
             temperaryMin = (temperaryMin + 59) % 60;
-            realTime -= 1000 * 60;
         }
         temperaryTimenow = String(temperaryHr < 10 ? "0" + String(temperaryHr) : String(temperaryHr)) + ":" + String(temperaryMin < 10 ? "0" + String(temperaryMin) : String(temperaryMin));
     }
