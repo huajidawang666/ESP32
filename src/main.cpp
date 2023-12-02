@@ -219,20 +219,20 @@ DONT MIND THE FUCK INDEX THEY FUCKED MY BRAIN UP
 */
 
 void transition(bool direction) {//1 stands for up, 0 stands for down
-    int frame = 0; // max = 8
-    while (frame <= 8) {
+    int frame = 0; // max = 4
+    while (frame <= 4) {
         u8g2.clearBuffer();
         u8g2.setFont(u8g2_font_7x14_tr);
         u8g2.setFontDirection(0);
         if (direction == 0) {
             for (int i = 1; i <= 4; i ++) {
                 if (cursor == i + pageStart - 1) {
-                    u8g2.drawLine(3, i * 16 - 11 + 2 * frame, 6, i * 16 - 8 + 2 * frame);
-                    u8g2.drawLine(3, i * 16 - 4 + 2 * frame, 6, i * 16 - 7 + 2 * frame);
-                    u8g2.setCursor(9 - 6 * frame / 8, 16 * i - 2);
+                    u8g2.drawLine(3, i * 16 - 11 + 4 * frame, 6, i * 16 - 8 + 4 * frame);
+                    u8g2.drawLine(3, i * 16 - 4 + 4 * frame, 6, i * 16 - 7 + 4 * frame);
+                    u8g2.setCursor(9 - 6 * frame / 4, 16 * i - 2);
                     u8g2.print(list[i + pageStart - 1]);
                 } else if (cursor == i + pageStart - 2) {
-                    u8g2.setCursor(3 + 6 * frame / 8, 16 * i - 2);
+                    u8g2.setCursor(3 + 6 * frame / 4, 16 * i - 2);
                     u8g2.print(list[i + pageStart - 1]);    
                 } else {
                     u8g2.setCursor(3, 16 * i - 2);
@@ -243,12 +243,12 @@ void transition(bool direction) {//1 stands for up, 0 stands for down
         } else {
             for (int i = 1; i <= 4; i ++) {
                 if (cursor == i + pageStart - 1) {
-                    u8g2.drawLine(3, i * 16 - 11 - 2 * frame, 6, i * 16 - 8 - 2 * frame);
-                    u8g2.drawLine(3, i * 16 - 4 - 2 * frame, 6, i * 16 - 7 - 2 * frame);
-                    u8g2.setCursor(9 - 6 * frame / 8, 16 * i - 2);
+                    u8g2.drawLine(3, i * 16 - 11 - 4 * frame, 6, i * 16 - 8 - 4 * frame);
+                    u8g2.drawLine(3, i * 16 - 4 - 4 * frame, 6, i * 16 - 7 - 4 * frame);
+                    u8g2.setCursor(9 - 6 * frame / 4, 16 * i - 2);
                     u8g2.print(list[i + pageStart - 1]);
                 } else if (cursor == i + pageStart) {
-                    u8g2.setCursor(3 + 6 * frame / 8, 16 * i - 2);
+                    u8g2.setCursor(3 + 6 * frame / 4, 16 * i - 2);
                     u8g2.print(list[i + pageStart - 1]);    
                 } else {
                     u8g2.setCursor(3, 16 * i - 2);
@@ -262,21 +262,21 @@ void transition(bool direction) {//1 stands for up, 0 stands for down
 }
 
 void slide(bool direction) {
-    int frame = 0; // max = 8
-    while (frame <= 8) {
+    int frame = 0; // max = 4
+    while (frame <= 4) {
         u8g2.clearBuffer();
         u8g2.setFont(u8g2_font_7x14_tr);
         u8g2.setFontDirection(0);
         if (direction == 0) {
             for (int i = 1; i <= 5; i ++) {
                 if (i == 4) {
-                    u8g2.setCursor(9 - 6 * frame / 8, 16 * i - 2 - 2 * frame);
+                    u8g2.setCursor(9 - 6 * frame / 4, 16 * i - 2 - 4 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 } else if (i == 5) {
-                    u8g2.setCursor(3 + 6 * frame / 8, 16 * i - 2 - 2 * frame);
+                    u8g2.setCursor(3 + 6 * frame / 4, 16 * i - 2 - 4 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 } else {
-                    u8g2.setCursor(3, 16 * i - 2 - 2 * frame);
+                    u8g2.setCursor(3, 16 * i - 2 - 4 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 }
             }
@@ -286,13 +286,13 @@ void slide(bool direction) {
         } else {
             for (int i = 0; i <= 4; i ++) {
                 if (i == 0) {
-                    u8g2.setCursor(3 + 6 * frame / 8, 16 * i - 2 + 2 * frame);
+                    u8g2.setCursor(3 + 6 * frame / 4, 16 * i - 2 + 4 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 } else if (i == 1) {
-                    u8g2.setCursor(9 - 6 * frame / 8, 16 * i - 2 + 2 * frame);
+                    u8g2.setCursor(9 - 6 * frame / 4, 16 * i - 2 + 42 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 } else {
-                    u8g2.setCursor(3, 16 * i - 2 + 2 * frame);
+                    u8g2.setCursor(3, 16 * i - 2 + 4 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 }
             }
