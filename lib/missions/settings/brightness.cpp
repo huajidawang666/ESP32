@@ -3,13 +3,6 @@
 #include "settings.h"
 #include "system.h"
 
-#define LEFT 12
-#define RIGHT 14
-#define UP 27
-#define DOWN 26
-#define ENTER 25
-
-
 void brightness_readInput();
 
 void brightness_init() {

@@ -23,11 +23,6 @@
 #include "system.h"
 #include "settings/settings.h"
 #define LIST_AMOUNT 10
-#define LEFT 12
-#define RIGHT 14
-#define UP 27
-#define DOWN 26
-#define ENTER 25
 #define SPARETIME 30000 // milliseconds
 
 //system
@@ -83,7 +78,6 @@ void loop() {
   u8g2.setFontDirection(0);
   currentTime = millis();
   u8g2.clearBuffer();
-  home_readInput();
   if (mode) {
     displayList();
     if (millis() > spareTime + SPARETIME) {
@@ -92,6 +86,7 @@ void loop() {
   } else {
     displayHome();
   }
+  home_readInput();
 }
 
 void displayHome() {
@@ -205,6 +200,12 @@ void startMission(int index) {
         finishMission = false;
         while (!finishMission) {
             settings_loop();
+        }
+    } else if (index == 4) {
+        chemistrytable_init();
+        finishMission = false;
+        while (!finishMission) {
+            chemistrytable_loop();
         }
     }
     spareTime = millis();

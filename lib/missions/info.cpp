@@ -1,11 +1,6 @@
 #include <Arduino.h>
 #include <U8g2lib.h>
 #include "system.h"
-#define LEFT 12
-#define RIGHT 14
-#define UP 27
-#define DOWN 26
-#define ENTER 25
 #define INFOLINE 20
 
 int info_pageStart = 1;
