@@ -3,30 +3,29 @@ This is my first ESP32 project developed with PlatformIO, including wide range o
 
 ## Features already developed
 ### Games
-· Ultimate TicTacToe
+- Ultimate TicTacToe
+
+### Tools
+- Chemistry Periodic Table
 
 ### Functions
-· Settings
-
-|- · Brightness
+- Settings
+- Info
+  - Brightness
+- UI interface
+  - Home page
 
 ## Features already developing
 ### Games
 
 ### Functions
-· Settings
-
-|- · Time & Date
+- Settings
+  - Time & Date
 
 ## Features planned
 ### Games
-· TicTacToe
+- TicTacToe
 
 ### Functions
-· Settings
-
-|- · WIFI
-
-· UI interface
-
-|- · Home page
+- Settings
+  - WIFI
