@@ -1,14 +1,6 @@
 #include <Arduino.h>
 #include <U8g2lib.h>
-#include "missions.h"
-#define LEFT 12
-#define RIGHT 14
-#define UP 27
-#define DOWN 26
-#define ENTER 25
-
-extern U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
-extern unsigned short int brightness;
+#include "system.h"
 
 int gameBoard[10][10] = {0};
 int subBoard[4][4] = {0};
@@ -18,7 +10,6 @@ int currentSubBoardIndexx = 0, currentSubBoardIndexy = 0;
 
 int finishSelect = 0; //0 stands for finish while 1 stands for restart
 
-extern bool finishMission;
 bool isRunning = false;
 
 bool isDisplaying = false;
@@ -61,6 +52,7 @@ void utt_init() {
   // gameBoard[2][6] = 2;
   // put your setup code here, to run once:
   // Serial.begin(9600);
+  u8g2.setContrast(brightness * 255 / 20);
 }
 
 void utt_loop() {
@@ -72,7 +64,6 @@ void utt_loop() {
   // Serial.println(currentSubBoardIndexy);
 
   u8g2.clearBuffer();
-  u8g2.setContrast(brightness * 255 / 20);
   printBoardStructure();
   printBoard();
   if (currentSelectx != 10) { printSelect();}
