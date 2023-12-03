@@ -74,6 +74,7 @@ void setup() {
 }
 
 void loop() {
+  realTime = realTime % 86400000;
   u8g2.setFont(u8g2_font_7x14_tr);
   u8g2.setFontDirection(0);
   currentTime = millis();
