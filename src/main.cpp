@@ -28,7 +28,7 @@
 //system
 unsigned short int brightness = 10;
 
-String list[LIST_AMOUNT + 1] = {"", "Ultimate TicTacToe", "Info", "Settings", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10"};
+String list[LIST_AMOUNT + 1] = {"", "Ultimate TicTacToe", "Chemistry Periodic Table", "Settings", "Info", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10"};
 int pageStart = 1;
 int cursor = 1;
 int showcaseIndex = 1;
@@ -190,10 +190,10 @@ void startMission(int index) {
             utt_loop();
         }
     } else if (index == 2) {
-        info_init();
+        chemistrytable_init();
         finishMission = false;
         while (!finishMission) {
-            info_loop();
+            chemistrytable_loop();
         }
     } else if (index == 3) {
         settings_init();
@@ -202,10 +202,10 @@ void startMission(int index) {
             settings_loop();
         }
     } else if (index == 4) {
-        chemistrytable_init();
+        info_init();
         finishMission = false;
         while (!finishMission) {
-            chemistrytable_loop();
+            info_loop();
         }
     }
     spareTime = millis();
