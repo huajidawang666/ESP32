@@ -291,7 +291,7 @@ void slide(bool direction) {
                     u8g2.setCursor(3 + 6 * frame / 4, 16 * i - 2 + 4 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 } else if (i == 1) {
-                    u8g2.setCursor(9 - 6 * frame / 4, 16 * i - 2 + 42 * frame);
+                    u8g2.setCursor(9 - 6 * frame / 4, 16 * i - 2 + 4 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 } else {
                     u8g2.setCursor(3, 16 * i - 2 + 4 * frame);
