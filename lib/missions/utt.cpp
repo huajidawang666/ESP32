@@ -2,6 +2,7 @@
 #include <U8g2lib.h>
 #include "system.h"
 
+int cellFilled[4][4] = {0};
 int gameBoard[10][10] = {0};
 int subBoard[4][4] = {0};
 int currentSelectx = 5, currentSelecty = 5;
@@ -30,9 +31,6 @@ bool checkWin(int player);
 void Message();
 
 void game_init();
-
-void utt_readInput();
-void placeCell();
 
 // put function declarations here:
 
@@ -120,8 +118,8 @@ void utt_loop() {
 void printBoardStructure() {
   for (int i = 1; i <= 8; i++) {
     if (i % 3 == 0) {
-      u8g2.drawVLine(i * 6, 0, 53);
-      u8g2.drawHLine(0, i * 6, 53);
+      u8g2.drawVLine(i * 6, 1, 52);
+      u8g2.drawHLine(1, i * 6, 52);
     } else {
       for (int j = 1; j <= 26; j++) {
         u8g2.drawPixel(i * 6, j * 2);
@@ -246,25 +244,23 @@ void utt_readInput() {
 }
 
 void placeCell() {
-  if (gameBoard[currentSelectx][currentSelecty] == 0 &&
-      subBoard[(currentSelectx - 1) / 3 + 1][(currentSelecty - 1) / 3 + 1] == 0 &&
-      ((currentSelectx - 1) / 3 + 1 == currentSubBoardIndexx || currentSubBoardIndexx == 0) &&
-      ((currentSelecty - 1) / 3 + 1 == currentSubBoardIndexy || currentSubBoardIndexy == 0) &&
+  if (gameBoard[currentSelectx][currentSelecty] == 0 && // small cell is not filled
+      subBoard[(currentSelectx - 1) / 3 + 1][(currentSelecty - 1) / 3 + 1] == 0 && // big cell is not filled
+      ((currentSelectx - 1) / 3 + 1 == currentSubBoardIndexx || currentSubBoardIndexx == 0) && // big cell is the specified one
+      ((currentSelecty - 1) / 3 + 1 == currentSubBoardIndexy || currentSubBoardIndexy == 0) && // big cell is the specified one
       currentSelectx != 10) {
     gameBoard[currentSelectx][currentSelecty] = currentTurn;
+    cellFilled[(currentSelectx - 1) / 3 + 1][(currentSelecty - 1) / 3 + 1] ++;
     
-    if (currentTurn == 1) {
-      currentTurn = 2;
-    } else {
-      currentTurn = 1;
-    }
+    currentTurn = 3 - currentTurn;
 
-    currentSubBoardIndexx = (currentSelectx - 1) % 3 + 1;
-    currentSubBoardIndexy = (currentSelecty - 1) % 3 + 1;
-    if ((currentSubBoardIndexx == 0 && currentSubBoardIndexy == 0) || subBoard[currentSubBoardIndexx][currentSubBoardIndexy] != 0) {
+    currentSubBoardIndexx = (currentSelectx - 1) % 3 + 1; // refresh the specified big cell
+    currentSubBoardIndexy = (currentSelecty - 1) % 3 + 1; // refresh the specified big cell
+    if (subBoard[currentSubBoardIndexx][currentSubBoardIndexy] != 0 || cellFilled[currentSubBoardIndexx][currentSubBoardIndexy] == 9) { // if the specified big cell has been filled or the specified big cell is not specified
       currentSubBoardIndexx = 0;
       currentSubBoardIndexy = 0;
     }
+
   }
 }
 
@@ -317,4 +313,5 @@ void game_init() {
   
   memset(gameBoard, 0, sizeof(gameBoard));
   memset(subBoard, 0, sizeof(subBoard));
+  memset(subBoard, 0, sizeof(cellFilled));
 }

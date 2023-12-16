@@ -8,6 +8,8 @@
 #define DOWN 26
 #define ENTER 25
 
+//TicTacToe
+void tictactoe_init(); void tictactoe_loop();
 //Ultimate Tictactoe
 void utt_init(); void utt_loop();
 //Info Line
