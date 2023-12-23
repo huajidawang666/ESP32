@@ -152,11 +152,11 @@ void home_readInput() {
                 slide(1);
                 pageStart--;
                 cursor--;
-                showcaseIndex = 0;
+                showcaseIndex = 1;
             } else if (cursor > pageStart) {
                 transition(1);
                 cursor--;
-                showcaseIndex = 0;
+                showcaseIndex = 1;
             }
         }
         if (readButton(DOWN, 4)) {
@@ -165,11 +165,11 @@ void home_readInput() {
                 slide(0);
                 pageStart++;
                 cursor++;
-                showcaseIndex = 0;
+                showcaseIndex = 1;
             } else if (cursor < pageStart + 3) {
                 transition(0);
                 cursor++;
-                showcaseIndex = 0;
+                showcaseIndex = 1;
             }
         }
         if (readButton(ENTER, 5)) {
