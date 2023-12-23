@@ -188,27 +188,7 @@ void printSelect() {
 
 extern int buttonStatus[6];
 
-bool readButton(int pin, int direction) {
-  // direction: 1 for left, 2 for right, 3 for up, 4 for down
-  if (digitalRead(pin)) {
-    // Serial.println("button pressed1");
-    delay(10);
-    if (digitalRead(pin) && buttonStatus[direction] == 0) {
-      // Serial.println("button pressed2");
-      buttonStatus[direction] = 1;
-      return true;
-    } else {
-      return false;
-    }
-  } else if (!digitalRead(pin)) {
-    delay(10);
-    if (!digitalRead(pin) && buttonStatus[direction] == 1) {
-      buttonStatus[direction] = 0;
-      return false;
-    }
-  }
-  return false;
-}
+
 
 void utt_readInput() {
   if (readButton(LEFT, 1)) {
