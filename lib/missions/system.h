@@ -9,7 +9,7 @@
 #define ENTER 25
 
 //TicTacToe
-void tictactoe_init(); void tictactoe_loop();
+void tictactoe();
 //Ultimate Tictactoe
 void utt_init(); void utt_loop();
 //Info Line

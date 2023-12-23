@@ -185,11 +185,7 @@ void home_readInput() {
 
 void startMission(int index) {
     if (index == 1) {
-        tictactoe_init();
-        finishMission = false;
-        while (!finishMission) {
-            tictactoe_loop();
-        }
+        tictactoe();
     } else if (index == 2) {
         utt_init();
         finishMission = false;

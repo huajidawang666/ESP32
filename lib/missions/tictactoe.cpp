@@ -2,9 +2,9 @@
 #include <U8g2lib.h>
 #include "system.h"
 
-class tictactoe {
+class tictactoeClass {
     public:
-    tictactoe() {
+    tictactoeClass() {
         init();
     }
 
@@ -111,61 +111,71 @@ class tictactoe {
     int gameBoard[4][4];
 };
 
-tictactoe tictactoeGame;
+void tictactoe_loop(tictactoeClass* tictactoeGame);
 
-void tictactoe_init() {
+void tictactoe() {
+    tictactoeClass* tictactoeGame = new tictactoeClass();
     u8g2.setContrast(brightness * 255 / 20);
     u8g2.setFontDirection(0);
-    tictactoeGame.init();
-    tictactoeGame.isRunning = 1;
+    tictactoeGame->init();
+    tictactoeGame->isRunning = 1;
+    
+    finishMission = false;
+    tictactoe_loop(tictactoeGame);
+    
 }
 
-void tictactoe_loop() {
-    u8g2.clearBuffer();
-    tictactoeGame.printBoardStructure();
-    tictactoeGame.printCell();
+void tictactoe_loop(tictactoeClass* tictactoeGame) {
 
-    if (tictactoeGame.isRunning == 1) {
-        tictactoeGame.printSelect();
-        tictactoeGame.printStatus();
-        tictactoeGame.readInput();
-        if (tictactoeGame.checkWin(1) || tictactoeGame.checkWin(2)) {
-            tictactoeGame.isRunning = 0;
-            tictactoeGame.msgStart = millis();
-        } else if (tictactoeGame.cellFilled == 9) {
-            tictactoeGame.isRunning = 0;
-            tictactoeGame.isTied = 1;
-            tictactoeGame.msgStart = millis();
+while (!finishMission) {
+
+    u8g2.clearBuffer();
+    tictactoeGame->printBoardStructure();
+    tictactoeGame->printCell();
+
+    if (tictactoeGame->isRunning == 1) {
+        tictactoeGame->printSelect();
+        tictactoeGame->printStatus();
+        tictactoeGame->readInput();
+        if (tictactoeGame->checkWin(1) || tictactoeGame->checkWin(2)) {
+            tictactoeGame->isRunning = 0;
+            tictactoeGame->msgStart = millis();
+        } else if (tictactoeGame->cellFilled == 9) {
+            tictactoeGame->isRunning = 0;
+            tictactoeGame->isTied = 1;
+            tictactoeGame->msgStart = millis();
         }
     } else {
         u8g2.setFont(u8g2_font_t0_11_tr);
         u8g2.setCursor(64, 20);
-        if (tictactoeGame.isTied == 0) {
-            if (tictactoeGame.currentTurn == 1 && millis() - tictactoeGame.msgStart <= 5000) {
-                u8g2.print("Player 1 wins!");
-            } else if (tictactoeGame.currentTurn == 2 && millis() - tictactoeGame.msgStart <= 5000) {
-                u8g2.print("Player 2 wins!");
+        if (tictactoeGame->isTied == 0) {
+            //turn is changed before the game is finished
+            if (tictactoeGame->currentTurn == 1 && millis() - tictactoeGame->msgStart <= 5000) {
+                u8g2.print("O wins!");
+            } else if (tictactoeGame->currentTurn == 2 && millis() - tictactoeGame->msgStart <= 5000) {
+                u8g2.print("X wins!");
             }
-        } else if (millis() - tictactoeGame.msgStart <= 5000){
+        } else if (millis() - tictactoeGame->msgStart <= 5000){
             u8g2.print("Tied.");
         }
 
         u8g2.setCursor(64, 40);
         u8g2.print("Retry?");
         u8g2.setCursor(64, 50);
-        u8g2.print(tictactoeGame.finishSelect ? "< Yes >" : "< No  >");
+        u8g2.print(tictactoeGame->finishSelect ? "< Yes >" : "< No  >");
         if (readButton(ENTER, 5)) {
-            if (tictactoeGame.finishSelect) {  
-                tictactoeGame.init();
-                tictactoeGame.isRunning = 1;
+            if (tictactoeGame->finishSelect) {  
+                tictactoeGame->init();
+                tictactoeGame->isRunning = 1;
                 // Serial.println("initialize");
-                } else {
+            } else {
                 finishMission = true;
+                delete tictactoeGame;
                 }
             }
             if (readButton(LEFT, 1) || readButton(RIGHT, 2)) {
-            tictactoeGame.finishSelect = !tictactoeGame.finishSelect;
+            tictactoeGame->finishSelect = !tictactoeGame->finishSelect;
         }
     }
     u8g2.sendBuffer();
-}
+}}
