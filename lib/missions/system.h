@@ -18,13 +18,14 @@ extern U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
 void tictactoe();
 //Ultimate Tictactoe
 void utt_init(); void utt_loop();
+//Chemistry Table
+void chemistrytable_init(); void chemistrytable_loop();
+//Chicken and Eggs
+void chickenAndEgg();
 //Info Line
 void info_init(); void info_loop();
 //Settings
 void settings_init(); void settings_loop();
-//Chemistry Table
-void chemistrytable_init(); void chemistrytable_loop();
-
 
 inline bool readButton(int pin, int direction) {
   // direction: 1 for left, 2 for right, 3 for up, 4 for down

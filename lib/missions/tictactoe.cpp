@@ -120,7 +120,6 @@ void tictactoe() {
     tictactoeGame->init();
     tictactoeGame->isRunning = 1;
     
-    finishMission = false;
     tictactoe_loop(tictactoeGame);
     
 }
