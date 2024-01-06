@@ -22,6 +22,8 @@ void utt_init(); void utt_loop();
 void chemistrytable_init(); void chemistrytable_loop();
 //Chicken and Eggs
 void chickenAndEgg();
+//Snake
+void snake();
 //Info Line
 void info_init(); void info_loop();
 //Settings
