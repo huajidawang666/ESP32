@@ -5,6 +5,8 @@ This is my first ESP32 project developed with PlatformIO, including wide range o
 ### Games
 - Ultimate TicTacToe
 - TicTacToe
+- Chicken and Eggs
+- Snake
 
 ### Tools
 - Chemistry Periodic Table
