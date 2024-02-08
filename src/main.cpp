@@ -28,7 +28,7 @@
 //system
 unsigned short int brightness = 10;
 
-String list[LIST_AMOUNT + 1] = {"", "Ultimate TicTacToe", "Chemistry Periodic Table", "Settings", "Info", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10"};
+String list[LIST_AMOUNT + 1] = {"", "TicTacToe", "Ultimate TicTacToe", "Chicken And Eggs", "Chemistry Periodic Table", "Snake", "Settings", "Info", "Test8", "Test9", "Test10"};
 int pageStart = 1;
 int cursor = 1;
 int showcaseIndex = 1;
@@ -37,6 +37,8 @@ int currentTime = 0;
 long realTime = 0;
 int spareTime = 0; // no action in 30s turn to home page, showing time
 bool mode = 1; // 0 stands for displayhome, 1 stands for displaylist
+
+bool wifiStatus = false;
 
 void home_readInput();
 void startMission(int index);
@@ -57,7 +59,7 @@ int buttonStatus[6] = {0};
 
 
 void setup() {
-//   Serial.begin(9600);
+  Serial.begin(9600);
   u8g2.begin();
   u8g2.setContrast(brightness * 255 / 20);
   u8g2.enableUTF8Print();
@@ -152,11 +154,11 @@ void home_readInput() {
                 slide(1);
                 pageStart--;
                 cursor--;
-                showcaseIndex = 0;
+                showcaseIndex = 1;
             } else if (cursor > pageStart) {
                 transition(1);
                 cursor--;
-                showcaseIndex = 0;
+                showcaseIndex = 1;
             }
         }
         if (readButton(DOWN, 4)) {
@@ -165,11 +167,11 @@ void home_readInput() {
                 slide(0);
                 pageStart++;
                 cursor++;
-                showcaseIndex = 0;
+                showcaseIndex = 1;
             } else if (cursor < pageStart + 3) {
                 transition(0);
                 cursor++;
-                showcaseIndex = 0;
+                showcaseIndex = 1;
             }
         }
         if (readButton(ENTER, 5)) {
@@ -185,24 +187,32 @@ void home_readInput() {
 
 void startMission(int index) {
     if (index == 1) {
+        finishMission = false;
+        tictactoe();
+    } else if (index == 2) {
         utt_init();
         finishMission = false;
         while (!finishMission) {
             utt_loop();
         }
-    } else if (index == 2) {
+    } else if (index == 3) {
+        finishMission = false;
+        chickenAndEgg();
+    } else if (index == 4) {
         chemistrytable_init();
         finishMission = false;
         while (!finishMission) {
             chemistrytable_loop();
         }
-    } else if (index == 3) {
+    } else if (index == 5) {
+        snake();
+    } else if (index == 6) {
         settings_init();
         finishMission = false;
         while (!finishMission) {
             settings_loop();
         }
-    } else if (index == 4) {
+    } else if (index == 7) {
         info_init();
         finishMission = false;
         while (!finishMission) {
@@ -291,7 +301,7 @@ void slide(bool direction) {
                     u8g2.setCursor(3 + 6 * frame / 4, 16 * i - 2 + 4 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 } else if (i == 1) {
-                    u8g2.setCursor(9 - 6 * frame / 4, 16 * i - 2 + 42 * frame);
+                    u8g2.setCursor(9 - 6 * frame / 4, 16 * i - 2 + 4 * frame);
                     u8g2.print(list[i + pageStart - 1]);
                 } else {
                     u8g2.setCursor(3, 16 * i - 2 + 4 * frame);

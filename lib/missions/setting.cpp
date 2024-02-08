@@ -15,7 +15,7 @@ String settings_list[SETTINGS_AMOUNT + 1] = {
                                     "|-No more byd this.-|",
                                     " Time & Date      -> ",
                                     " Brightness       -> ",
-                                    " Test1               ",
+                                    " WIFI             -> ",
                                     " Test2               ",
                                     " Test3               ",
                                     " Test4               ",
@@ -88,13 +88,15 @@ void settings_readInput() {
             while (!finishSettingMission) {
                 timeanddate_loop();
             }
-        }
-        if (settings_cursor == 2) {
+        } else if (settings_cursor == 2) {
             finishSettingMission = false;
             brightness_init();
             while (!finishSettingMission) {
                 brightness_loop();
             }
+        } else if (settings_cursor == 3) {
+            finishSettingMission = false;
+            wifi();
         }
     }
 }
