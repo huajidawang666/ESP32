@@ -1,4 +1,6 @@
 #include <U8g2lib.h>
+#include <Wifi.h>
+#include <DNSServer.h>
 #ifndef MISSIONS_H_INCLUDED
 #define MISSIONS_H_INCLUDED
 
@@ -12,6 +14,9 @@ extern long realTime;
 extern bool finishMission;
 extern unsigned short int brightness;
 extern int buttonStatus[6];
+
+extern bool wifiStatus;
+
 extern U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
 
 //TicTacToe

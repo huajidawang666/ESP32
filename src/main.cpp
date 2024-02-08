@@ -38,6 +38,8 @@ long realTime = 0;
 int spareTime = 0; // no action in 30s turn to home page, showing time
 bool mode = 1; // 0 stands for displayhome, 1 stands for displaylist
 
+bool wifiStatus = false;
+
 void home_readInput();
 void startMission(int index);
 void transition(bool direction);
@@ -57,7 +59,7 @@ int buttonStatus[6] = {0};
 
 
 void setup() {
-//   Serial.begin(9600);
+  Serial.begin(9600);
   u8g2.begin();
   u8g2.setContrast(brightness * 255 / 20);
   u8g2.enableUTF8Print();

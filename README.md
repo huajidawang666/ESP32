@@ -18,6 +18,7 @@ This is my first ESP32 project developed with PlatformIO, including wide range o
   - Time & Date
 - UI interface
   - Home page
+- WIFI
 
 ## Features already developing
 ### Games
@@ -28,5 +29,3 @@ This is my first ESP32 project developed with PlatformIO, including wide range o
 ### Games
 
 ### Functions
-- Settings
-  - WIFI
